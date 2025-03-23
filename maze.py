@@ -106,33 +106,45 @@ class Maze():
         currentCell.visited = True
         print(f"walls at self._cells[{i},{j}]: Top:{currentCell.top_wall}, Bottom:{currentCell.bottom_wall}, Left:{currentCell.left_wall}, Right:{currentCell.right_wall}")
         self._animate()
-        for i in range(0,4):
-            if i == 0:
-                print("Checking right")
+        for d in range(0,4):
+            if d == 0:
+                print("Checking left")
                 if i - 1 >= 0 and not self._cells[i-1][j].visited:
-                    if not currentCell.right_wall:
-                        print("open right")
+                    if not currentCell.left_wall:
+                        currentCell.draw_move(self._cells[i-1][j])
+                        print("open left")
                         if self._solve_r(i-1, j):
                             return True
-            elif i == 1:
-                print("Checking left")
+                        else:
+                            currentCell.draw_move(self._cells[i-1][j], undo = True)
+            elif d == 1:
+                print("Checking right")
                 if i + 1 < self.num_cols and not self._cells[i+1][j].visited:
-                    if not currentCell.left_wall:
-                        print("open left")
+                    if not currentCell.right_wall:
+                        currentCell.draw_move(self._cells[i+1][j])
+                        print("open right")
                         if self._solve_r(i+1, j):
                             return True
-            elif i == 2:
+                        else:
+                            currentCell.draw_move(self._cells[i+1][j], undo = True)
+            elif d == 2:
                 print("Checking bottom")
                 if j + 1 < self.num_rows and not self._cells[i][j+1].visited:
                     if not currentCell.bottom_wall:
+                        currentCell.draw_move(self._cells[i][j+1])
                         print("open bottom")
                         if self._solve_r(i, j+1):
                             return True
-            elif i == 3:
+                        else:
+                            currentCell.draw_move(self._cells[i][j+1], undo = True)
+            elif d == 3:
                 print("Checking top")
                 if j - 1 >= 0 and not self._cells[i][j-1].visited:
                     if not currentCell.top_wall:
+                        currentCell.draw_move(self._cells[i][j-1])
                         print("open top")
                         if self._solve_r(i, j-1):
                             return True
+                        else:
+                            currentCell.draw_move(self._cells[i][j-1], undo = True)
         return False
